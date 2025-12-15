@@ -199,6 +199,29 @@
         const App = () => {
             const [currentTime, setCurrentTime] = useState(new Date());
 
+            // Function to safely check localStorage for a seed, or create a new one.
+            const getOrCreateAvatarSeed = () => {
+                const storageKey = 'pakgamedev_avatarSeed';
+                
+                // Use a try/catch block for safer localStorage access
+                try {
+                    let seed = localStorage.getItem(storageKey);
+                    if (!seed) {
+                        // If no seed exists, generate a new one
+                        seed = Math.random().toString(36).substring(2);
+                        localStorage.setItem(storageKey, seed);
+                    }
+                    return seed;
+                } catch (error) {
+                    // Fallback if localStorage is unavailable or throws an error
+                    console.error("Could not access localStorage. Using temporary random seed.", error);
+                    return Math.random().toString(36).substring(2);
+                }
+            };
+            
+            // Initialize the state by calling the function
+            const [avatarSeed] = useState(getOrCreateAvatarSeed);
+
             // Get the first news item as the featured event
             const featuredEvent = newsItems[0]; 
 
@@ -233,7 +256,7 @@
                             <i className="fa-solid fa-wifi text-xs text-green-500"></i>
                             <span className="text-lg tracking-wider">{formatTime(currentTime)}</span>
                             <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden border border-gray-500">
-                                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" alt="User" />
+                                <img src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${avatarSeed}`} alt="User" />
                             </div>
                         </div>
                     </nav>
