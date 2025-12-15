@@ -183,7 +183,7 @@
                 date: "Dec 12, 2025",
                 image: "https://i.ytimg.com/vi/6oWF8uabrQM/maxresdefault.jpg",
                 url: "https://www.youtube.com/watch?v=6oWF8uabrQM",
-                desc: "A un-official list of best Pakistani games from the year"
+                desc: "An un-official list of best Pakistani games from the year"
             },
             {
                 id: 103,
@@ -256,7 +256,7 @@
                             <i className="fa-solid fa-wifi text-xs text-green-500"></i>
                             <span className="text-lg tracking-wider">{formatTime(currentTime)}</span>
                             <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden border border-gray-500">
-                                <img src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${avatarSeed}`} alt="User" />
+                                <img src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${avatarSeed}`} alt="User" />
                             </div>
                         </div>
                     </nav>
@@ -281,7 +281,7 @@
                                     {/* Icon/Category */}
                                     <div className="md:w-1/4 flex flex-col items-center justify-center mb-4 md:mb-0">
                                         <i className="fa-solid fa-calendar-days text-6xl text-green-400 text-glow mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                        <span className="text-sm font-bold uppercase tracking-widest text-green-300 border-b-2 border-green-500/50">Featured Event</span>
+                                        <span className="text-sm font-bold uppercase tracking-widest text-green-300 border-b-2 border-green-500/50">Featured {featuredEvent.category}</span>
                                     </div>
 
                                     {/* Details */}
@@ -305,7 +305,7 @@
                         <section>
                             <div className="flex items-end justify-between mb-4 px-1">
                                 <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3">Community Links</h3>
-                                <span className="text-xs text-gray-500 uppercase tracking-widest hidden md:block">Press Enter to Select</span>
+                                <span className="text-xs text-gray-500 uppercase tracking-widest hidden md:block">Press Start to Join</span>
                             </div>
                             
                             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
