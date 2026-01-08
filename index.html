@@ -164,11 +164,29 @@
                 color: "text-yellow-400",
                 url: "game-jam",
                 bgImage: "https://img.itch.zone/aW1hZ2UyL2phbS80MDkzMzAvMjI4ODU0MTMucG5n/original/prQvKA.png"
+            },
+            {
+                id: 6,
+                title: "Game Dev Club",
+                subtitle: "A Game A Week",
+                icon: "fa-solid fa-gamepad",
+                color: "text-cyan-400",
+                url: "club",
+                bgImage: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=1470&auto=format&fit=crop"
             }
         ];
 
         // Data for News
         const newsItems = [
+            {
+                id: 104,
+                category: "ANNOUNCEMENT",
+                title: "Join the Game Dev Club",
+                date: "2026",
+                image: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=1470&auto=format&fit=crop",
+                url: "club",
+                desc: "Play one new game every week. Head over to our discord server for discussions."
+            },
             {
                 id: 101,
                 category: "EVENT",
@@ -302,7 +320,7 @@
                                         </h3>
                                         <p className="text-gray-300 max-w-xl mx-auto md:mx-0">{featuredEvent.desc}</p>
                                         <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
-                                            <span className="mr-2">REGISTER NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
+                                            <span className="mr-2">SEE NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -318,7 +336,7 @@
                                 <span className="text-xs text-gray-500 uppercase tracking-widest hidden md:block">Press Start to Join</span>
                             </div>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                                 {communityLinks.map((link) => (
                                     <a 
                                         key={link.id} 
