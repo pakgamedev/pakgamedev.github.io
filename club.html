@@ -272,6 +272,53 @@
             );
         };
 
+        const PastGames = ({ user }) => {
+            const [games, setGames] = useState([]);
+            
+
+            useEffect(() => {
+                if (!user) return;
+                const { db, appId, collection, onSnapshot } = window.FB;
+                
+                // Using the specific path structure provided
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'past');
+                
+                const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                    const gamesList = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setGames(gamesList);
+                }, (err) => console.error("Firestore error", err));
+
+                return () => unsubscribe();
+            }, [user]);
+
+            if (games.length === 0) return null;
+
+            return (
+                <section className="mt-16">
+                    <div className="flex items-end justify-between mb-6 px-1">
+                        <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-cyan-500 pl-3 text-glow">Previously Played</h3>
+                    </div>
+                    <div className="grid grid-cols-10 sm:grid-cols-[repeat(16,_minmax(0,_1fr))] md:grid-cols-[repeat(18,_minmax(0,_1fr))] lg:grid-cols-[repeat(20,_minmax(0,_1fr))] gap-1 md:gap-2">
+                        {games.map((game) => (
+                            <a href={game.url} target="_blank" key={game.doc_id} className="group relative aspect-square glass-panel rounded-lg overflow-hidden cursor-pointer">
+                                <img 
+                                    src={game.icon_image || 'https://via.placeholder.com/150'} 
+                                    alt={game.name}
+                                    className="no-filter w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
+                                    <p className="text-[10px] text-center font-bold uppercase leading-tight">{game.name}</p>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
 
         const App = () => {
             const [currentTime, setCurrentTime] = useState(new Date());
@@ -366,7 +413,7 @@
 
 			            <CurrentGameHero user={user} />
                         <QueuedGames user={user} />
-
+                        <PastGames user={user} />
                         
                         {/* Footer / Status Bar */}
                         <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
