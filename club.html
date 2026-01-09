@@ -185,7 +185,7 @@
 
                     {/* Content */}
                     <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
-                        <div className="space-y-6 max-w-2xl">
+                        <div className="space-y-6 max-w-3xl">
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-bold tracking-[0.2em] uppercase">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -198,11 +198,11 @@
                             {currentGame.library_logo ? (
                                 <img 
                                     src={currentGame.library_logo} 
-                                    className="text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow h-20 md:h-32 object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
+                                    className="line-clamp-2 text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow max-h-20 md:max-h-[11rem] object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
                                     alt={currentGame.name} 
                                 />
                             ) : (
-                                <h2 className="text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow">
+                                <h2 className="line-clamp-2 text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow">
                                     {currentGame.name}
                                 </h2>
                             )}
