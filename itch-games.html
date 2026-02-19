@@ -1,12 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=https://itch.io/games/tag-pakistani">
-  <link rel="canonical" href="https://itch.io/games/tag-pakistani">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan Game Dev - Game Development Community in Pakistan</title>
+    <meta property="og:title" content="Pakistan Game Dev">
+    <meta property="og:image" content="https://pakgamedev.com/files/preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://pakgamedev.com/files/preview.png">
+    <meta name="description" content="PakGameDev is a tight knit community of Game Developers, indies, hobbyists, artists and creatives. Connect with the Pakistani game development ecosystem, join jams, showcase your work, find resources, collaborations, support and level up together.">
+    <meta property="og:description" content="PakGameDev is a tight knit community of Game Developers, indies, hobbyists, artists and creatives. Connect with the Pakistani game development ecosystem, join jams, showcase your work, find resources, collaborations, support and level up together.">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Pak Game Dev" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Rajdhani for that "Sci-Fi/Gamer" look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            font-display: swap;
+            background-color: #0f172a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #22c55e; 
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Animated Background Gradient */
+        .bg-animated {
+            background: linear-gradient(-45deg, #022c22, #0f172a, #1a2e05, #000000);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.3;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+    </style>
 </head>
 <body>
-  <script>
-    window.location.href = "https://itch.io/games/tag-pakistani";
-  </script>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [currentTime, setCurrentTime] = useState(new Date());
+
+            // Function to safely check localStorage for a seed, or create a new one.
+            const getOrCreateAvatarSeed = () => {
+                const storageKey = 'pakgamedev_avatarSeed';
+                
+                // Use a try/catch block for safer localStorage access
+                try {
+                    let seed = localStorage.getItem(storageKey);
+                    if (!seed) {
+                        // If no seed exists, generate a new one
+                        seed = Math.random().toString(36).substring(2);
+                        localStorage.setItem(storageKey, seed);
+                    }
+                    return seed;
+                } catch (error) {
+                    // Fallback if localStorage is unavailable or throws an error
+                    console.error("Could not access localStorage. Using temporary random seed.", error);
+                    return Math.random().toString(36).substring(2);
+                }
+            };
+            
+            // Initialize the state by calling the function
+            const [avatarSeed] = useState(getOrCreateAvatarSeed);
+
+            // Clock update
+            useEffect(() => {
+                const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const formatTime = (date) => {
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            };
+
+            return (
+                <div className="relative min-h-screen text-white selection:bg-green-500 selection:text-black">
+                    <div className="bg-animated"></div>
+                    <div className="scanlines"></div>
+                    
+                    {/* Top Navigation Bar */}
+                    <nav className="relative z-10 flex items-center justify-between px-8 py-6 backdrop-blur-sm bg-black/20 border-b border-white/5">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-green-600 rounded flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(22,163,74,0.6)]">
+                                <img className="rounded" src="https://styles.redditmedia.com/t5_ckbq64/styles/communityIcon_ooei9a15xprd1.png" alt="Community Icon" />
+                            </div>
+                            <div>
+                                <h1 className="text-2xl font-bold tracking-wider uppercase">Pakistan Game Dev</h1>
+                                <p className="text-xs text-green-400 tracking-[0.2em] uppercase">Community in Pakistan</p>
+                            </div>
+                        </div>
+
+
+                        <a href="awards" className="hidden md:flex items-center gap-4">
+                            <img className="w-10 h-[12.9]" src="files/awards_logo.png" alt="Awards Logo" />
+                            <div className="mt-0 mb-0">
+                                <h1 className="text-2xl font-bold tracking-wider uppercase leading-[0.75]">Pak<br/>Game<br/>Awards</h1>
+                            </div>
+                        </a>
+
+                        <div className="flex items-center gap-4 text-xl font-light">
+                            <i className="fa-solid fa-wifi text-xs text-green-500"></i>
+                            <span className="text-lg tracking-wider">{formatTime(currentTime)}</span>
+                            <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden border border-gray-500">
+                                <img src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${avatarSeed}`} alt="User" />
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Main Content Dashboard */}
+                    <main className="relative z-10 p-4 md:p-10 max-w-7xl mx-auto space-y-12">
+                        
+                        {/* Hero / Welcome */}
+                        <section className="mb-8">
+                            <h2 className="text-4xl md:text-6xl font-bold mb-2">
+                                MEGA LIST OF <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">PAKISTANI </span>
+                                ITCH.IO GAMES
+                            </h2>
+                            <p className="text-white-400 text-lg max-w-4xl">
+                                A lot of Pakistani Developers have been uploading their free and commercial games on itch.io for years and yet we barely know about them. This list aims to gather them all in one place.
+                            </p>
+                            <h2 className="text-2xl md:text-4xl font-bold mb-2 mt-6">
+                                HOW TO BE PART OF THE LIST?
+                            </h2>
+                            <p className="text-white-400 text-lg max-w-4xl">
+                                This is an opt-in list. If you game is indexed, simply add the tag 'pakistani' to your itch.io game. Further details about game indexing at the bottom of the page.
+                            </p>
+                        </section>
+
+                        {/* FEATURED EVENT LINK */}
+                        <section className="mb-12">
+                            <a target="_blank" href={"https://itch.io/games/tag-pakistani"} className="block glass-panel rounded-xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(22,163,74,0.6)] group">
+                                <div className="flex flex-col md:flex-row items-center p-6 md:p-8">
+                                    {/* Icon/Category */}
+                                    <div className="md:w-1/4 flex flex-col items-center justify-center mb-4 md:mb-0">
+                                        <i className="fa-brands fa-itch-io text-6xl text-green-400 text-glow mb-2 group-hover:scale-110 transition-transform duration-300"></i>
+                                        <span className="text-sm font-bold uppercase tracking-widest text-green-300 border-b-2 border-green-500/50">ITCH.IO</span>
+                                    </div>
+
+                                    {/* Details */}
+                                    <div className="md:w-3/4 md:border-l md:border-white/10 md:pl-8 text-center md:text-left">
+                                        <span className="text-xs text-grey-400 font-semibold uppercase tracking-widest block mb-1">LIST</span>
+                                        <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition">
+                                            PROCEED TO PAKISTANI ITCH.IO GAMES
+                                        </h3>
+                                        <p className="text-gray-300 max-w-xl mx-auto md:mx-0">https://itch.io/games/tag-pakistani</p>
+                                        <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
+                                            <span className="mr-2">SEE NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </section>
+                        {/* END FEATURED EVENT LINK */}
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl md:text-4xl font-bold mb-2 mt-6">
+                                ABOUT INDEXING
+                            </h2>
+                            <p className="text-white-400 text-lg max-w-5xl">
+                                Indexing is important for itch games to appear in many places including search, new, upcoming or popular charts and the above list.
+                                <br/>
+                                To check if you game is indexed, search it on itch.io by name. If it appears, it is indexed and you can simply add the tag 'pakistani' to it.
+                                <br/>That's it. Enjoy!
+                            </p>
+                            <h2 className="text-2xl md:text-4xl font-bold mb-2 mt-6">
+                                MY GAME IS NOT INDEXED
+                            </h2>
+                            <p className="text-white-400 text-lg max-w-5xl">
+                                If your game does not appear in the search on itch.io, get your game indexed. Check the itch.io docs how:<br/>
+                                <a href="https://itch.io/docs/creators/getting-indexed#publishing-vs-indexing/getting-indexed" target="_blank">https://itch.io/docs/creators/getting-indexed#publishing-vs-indexing/getting-indexed</a>
+                                <br/>
+                                <br/>If your game meets all the requirements mentioned in the docs and your game is not being indexed automatically even after a week of publishing, then you must contact itch support and ask them politely to index the game. Make sure to include the link to your game.
+                                <br/>
+                                All this information is also included in the above mentioned docs. However, what's missing is that most new accounts need to contact support to get their games indexed either way. Automatic indexing does not work until you are an established and trusted itch.io user.
+Itch support email: support@itch.io
+                            </p>
+                        </section>
+
+                        {/* Footer / Status Bar */}
+                        <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-200 text-sm">
+                            <div className="flex gap-6 mb-4 md:mb-0">
+                                <a href="#" className="hover:text-white transition">Privacy</a>
+                                <a href="#" className="hover:text-white transition">Terms</a>
+                                <a href="#" className="hover:text-white transition">Contact</a>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span>SYSTEM STATUS:</span>
+                                <span className="text-green-500 font-bold">ONLINE</span>
+                                <span className="w-2 h-2 bg-green-500 rounded-full animate-ping ml-1"></span>
+                            </div>
+                            <div className="mt-4 md:mt-0">
+                                &copy; 2025 PakGameDev Community.
+                            </div>
+                        </footer>
+
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
