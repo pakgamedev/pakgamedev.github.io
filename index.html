@@ -167,19 +167,46 @@
                 url: "game-jam",
                 bgImage: "https://img.itch.zone/aW1nLzIyOTM0MzMxLnBuZw==/140x111%23/oWlf6B.png"
             },
+            // {
+            //     id: 6,
+            //     title: "Game Dev Club",
+            //     subtitle: "A Game A Week",
+            //     icon: "fa-solid fa-gamepad",
+            //     color: "text-cyan-400",
+            //     url: "club",
+            //     bgImage: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=512&auto=format&fit=crop"
+            // },
             {
-                id: 6,
-                title: "Game Dev Club",
-                subtitle: "A Game A Week",
-                icon: "fa-solid fa-gamepad",
-                color: "text-cyan-400",
+                id: 7,
+                title: "Linkedin",
+                subtitle: "Follow if you must",
+                icon: "fa-brands fa-linkedin",
+                color: "text-sky-400",
                 url: "club",
-                bgImage: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=512&auto=format&fit=crop"
+                bgImage: "https://images.unsplash.com/photo-1585288766827-c62e98d70191?q=80&w=512&auto=format&fit=crop"
             }
         ];
 
         // Data for News
         const newsItems = [
+            {
+                id: 108,
+                category: "EVENT",
+                title: "Games from Pakistan",
+                date: "1st August, 2026",
+                image: "https://i.redd.it/lc1aepfiuofh1.jpeg",
+                url: "https://store.steampowered.com/sale/pakistan2026",
+                desc: "First ever Pakistani Steam event showcasing 50+ Pakistani games!"
+            },
+            {
+                id: 107,
+                category: "GAME JAM",
+                title: "Pakistan Game Jam 2026.2",
+                date: "13th August, 2026",
+                image: "https://img.itch.zone/aW1nLzI4MTAzNjI3LnBuZw==/original/aa%2Bx0d.png",
+                url: "game-jam",
+                desc: "Happening alongside Games from Pakistan. Join the itch.io jam now."
+            },
             {
                 id: 106,
                 category: "GAME JAM",
@@ -327,18 +354,21 @@
                             <a target="_blank" href={featuredEvent.url} className="block glass-panel rounded-xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(22,163,74,0.6)] group">
                                 <div className="flex flex-col md:flex-row items-center p-6 md:p-8">
                                     {/* Icon/Category */}
-                                    <div className="md:w-1/4 flex flex-col items-center justify-center mb-4 md:mb-0">
-                                        <i className="fa-solid fa-calendar-days text-6xl text-green-400 text-glow mb-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                        <span className="text-sm font-bold uppercase tracking-widest text-green-300 border-b-2 border-green-500/50">Featured {featuredEvent.category}</span>
+                                    <div className="md:w-1/4 relative mb-4 md:mb-0 rounded-xl overflow-hidden h-48">
+                                        <img 
+                                            src={featuredEvent.image} 
+                                            alt={featuredEvent.title} 
+                                            className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-90 transition-opacity duration-500" 
+                                        />
                                     </div>
 
                                     {/* Details */}
-                                    <div className="md:w-3/4 md:border-l md:border-white/10 md:pl-8 text-center md:text-left">
-                                        <span className="text-xs text-purple-400 font-semibold uppercase tracking-widest block mb-1">{featuredEvent.category} | {featuredEvent.date}</span>
+                                    <div className="md:w-3/4 md:pl-8 text-center md:text-left">
+                                        <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest block mb-1">{featuredEvent.category} | {featuredEvent.date}</span>
                                         <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition">
                                             {featuredEvent.title}
                                         </h3>
-                                        <p className="text-gray-300 max-w-xl mx-auto md:mx-0">{featuredEvent.desc}</p>
+                                        <p className="text-gray-300 max-w-xl mx-auto md:mx-0 text-xl">{featuredEvent.desc}</p>
                                         <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
                                             <span className="mr-2">SEE NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
                                         </div>
@@ -362,7 +392,7 @@
                                         key={link.id} 
                                         href={link.url}
                                         target="_blank"
-                                        className="group relative h-64 glass-panel rounded-xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 no-underline"
+                                        className="group relative h-48 glass-panel rounded-xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 no-underline"
                                     >
                                         {/* Background Image with Overlay */}
                                         <div className="absolute inset-0 z-0">
@@ -408,11 +438,10 @@
                                         {/* Content */}
                                         <div className="md:w-3/5 p-6 flex flex-col justify-center relative">
                                             <div className="flex items-center gap-2 mb-2">
-                                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                                <span className="text-xs text-gray-400 uppercase tracking-wider">{news.date}</span>
+                                                <span className="text-xs text-gray-400 uppercase tracking-wider group-hover:text-gray-200">{news.date}</span>
                                             </div>
                                             <h4 className="text-xl font-bold mb-2 leading-tight group-hover:text-green-400 transition">{news.title}</h4>
-                                            <p className="text-sm text-gray-400 line-clamp-2">{news.desc}</p>
+                                            <p className="text-l text-gray-400 line-clamp-2 group-hover:text-gray-200">{news.desc}</p>
                                             
                                             <div className="mt-4 flex items-center gap-2 text-xs font-bold text-green-500 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                                                 Learn More <i className="fa-solid fa-arrow-right"></i>
@@ -436,7 +465,7 @@
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-ping ml-1"></span>
                             </div>
                             <div className="mt-4 md:mt-0">
-                                &copy; 2025 PakGameDev Community.
+                                &copy; 2026 PakGameDev Community.
                             </div>
                         </footer>
 
