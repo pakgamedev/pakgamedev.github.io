@@ -1,4 +1,4 @@
-/* PakGameDev catalogue — edit this file (single source of truth). Works with file:// and HTTP. */
+/* PakGameDev catalogue: edit this file (single source of truth). Works with file:// and HTTP. */
 window.__PAK_CONTENT__ = 
 {
   "items": [
@@ -45,7 +45,7 @@ window.__PAK_CONTENT__ =
       "dateISO": "2026-11-06",
       "image": "https://img.itch.zone/aW1nLzMxMTUwMTE3LnBuZw==/original/8lrMg8.png",
       "url": "https://itch.io/jam/chutti",
-      "desc": "Holiday jam — pick one (or mix) of three themes and make a small game. Public vote decides the winner."
+      "desc": "Holiday jam: pick one (or mix) of three themes and make a small game. Public vote decides the winner."
     },
     {
       "id": "jam-2026-2",
@@ -143,7 +143,7 @@ window.__PAK_CONTENT__ =
       "id": "jam-ggj-2026",
       "type": "jam",
       "status": "past",
-      "title": "Global Game Jam '26 — Pakistan",
+      "title": "Global Game Jam '26: Pakistan",
       "date": "Starting 26 January, 2026",
       "dateISO": "2026-01-26",
       "image": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=512&auto=format&fit=crop",
@@ -191,7 +191,7 @@ window.__PAK_CONTENT__ =
       "id": "news-101",
       "type": "news",
       "category": "EVENT",
-      "title": "Global Game Jam '26 - Pakistan",
+      "title": "Global Game Jam '26: Pakistan",
       "date": "Starting Jan 26, 2026",
       "dateISO": "2026-01-26",
       "image": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=512&auto=format&fit=crop",

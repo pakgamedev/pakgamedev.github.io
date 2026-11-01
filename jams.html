@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Jams - Pakistan Game Dev</title>
-    <meta property="og:title" content="Game Jams - Pakistan Game Dev">
+    <title>Pakistan Game Jams: Upcoming &amp; Past | PakGameDev</title>
+    <meta name="description" content="Join Pakistan Game Jam and holiday jams with PakGameDev. Open to students and indie developers. Upcoming themes, past winners, and how to enter.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://pakgamedev.com/jams">
+    <link rel="alternate" type="text/plain" href="https://pakgamedev.com/llms.txt" title="LLM summary">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pakistan Game Dev">
+    <meta property="og:url" content="https://pakgamedev.com/jams">
+    <meta property="og:title" content="Pakistan Game Jams: Upcoming &amp; Past | PakGameDev">
+    <meta property="og:description" content="Join Pakistan Game Jam and holiday jams with PakGameDev. Open to students and indie developers.">
     <meta property="og:image" content="https://pakgamedev.com/files/preview.png">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pakistan Game Jams: Upcoming &amp; Past | PakGameDev">
+    <meta name="twitter:description" content="Join Pakistan Game Jam and holiday jams with PakGameDev. Open to students and indie developers.">
     <meta name="twitter:image" content="https://pakgamedev.com/files/preview.png">
-    <meta name="description" content="Pakistan Game Dev jams past and present. Join the next jam, play submissions, and celebrate what the community builds together.">
-    <meta property="og:description" content="Pakistan Game Dev jams past and present. Join the next jam, play submissions, and celebrate what the community builds together.">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Pak Game Dev Jams" />
     <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Pakistan Game Jams",
+      "url": "https://pakgamedev.com/jams",
+      "description": "Upcoming and past game jams organized with the Pakistan Game Dev community, open to students and indie developers.",
+      "isPartOf": { "@type": "WebSite", "name": "Pakistan Game Dev", "url": "https://pakgamedev.com/" },
+      "about": { "@type": "Organization", "name": "Pakistan Game Dev", "url": "https://pakgamedev.com/" }
+    }
+    </script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -29,7 +48,13 @@
     <script src="js/content.js"></script>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <main>
+            <h1>Pakistan Game Jams</h1>
+            <p>PakGameDev hosts Pakistan Game Jam and holiday jams for Pakistani game developers and students. Browse upcoming jams and past submissions at this page, then join Discord to team up.</p>
+            <p><a href="https://pakgamedev.com/">Back to Pakistan Game Dev</a> · <a href="https://pakgamedev.com/discord">Join Discord</a></p>
+        </main>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -108,7 +133,7 @@
                                 GAME <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">JAMS</span>
                             </h2>
                             <p className="helper-text lead max-w-3xl">
-                                Short bursts of making games with the community. Upcoming jams sit at the top; everything we have run is archived below.
+                                Short bursts of making games with Pakistani developers and students. Upcoming jams sit at the top; everything we have run is archived below.
                             </p>
                         </section>
 
@@ -151,7 +176,7 @@
                                                 <div>
                                                     <h3 className="text-2xl font-bold tracking-wider uppercase mb-2">Next jam cooking</h3>
                                                     <p className="helper-text mb-0 max-w-2xl">
-                                                        No jam is open right now. Follow the community channels and check back here — the next Pakistan Game Jam will be featured at the top when it goes live.
+                                                        No jam is open right now. Follow the community channels and check back here. The next Pakistan Game Jam will be featured at the top when it goes live.
                                                     </p>
                                                 </div>
                                             </div>

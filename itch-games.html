@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pakistani Games On Itch.io - Organized by Pakistan Game Dev Community</title>
-    <meta property="og:title" content="Pakistani Games On Itch.io - Organized by Pakistan Game Dev Community">
+    <title>Pakistani Games on itch.io: Community List | PakGameDev</title>
+    <meta name="description" content="Browse free and commercial games by Pakistani developers on itch.io. Maintained with Pakistan Game Dev, plus steps to get your game listed.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://pakgamedev.com/itch-games">
+    <link rel="alternate" type="text/plain" href="https://pakgamedev.com/llms.txt" title="LLM summary">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pakistan Game Dev">
+    <meta property="og:url" content="https://pakgamedev.com/itch-games">
+    <meta property="og:title" content="Pakistani Games on itch.io: Community List | PakGameDev">
+    <meta property="og:description" content="Free and commercial games by Pakistani developers on itch.io, gathered in one place by PakGameDev.">
     <meta property="og:image" content="https://pakgamedev.com/files/itch-preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pakistani Games on itch.io: Community List | PakGameDev">
+    <meta name="twitter:description" content="Free and commercial games by Pakistani developers on itch.io, gathered in one place by PakGameDev.">
     <meta name="twitter:image" content="https://pakgamedev.com/files/itch-preview.jpg">
-    <meta name="description" content="Many Pakistani developers have been uploading their free and commercial games on itch.io for years and yet, we barely know about them. This list aims to gather them all in one place.">
-    <meta property="og:description" content="Many Pakistani developers have been uploading their free and commercial games on itch.io for years and yet, we barely know about them. This list aims to gather them all in one place.">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Pakistani Games On Itch.io" />
     <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Pakistani Games on itch.io",
+      "url": "https://pakgamedev.com/itch-games",
+      "description": "Community list of free and commercial games by Pakistani developers on itch.io.",
+      "isPartOf": { "@type": "WebSite", "name": "Pakistan Game Dev", "url": "https://pakgamedev.com/" }
+    }
+    </script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -27,7 +45,13 @@
     <link rel="stylesheet" href="styles.css?v=itch-cta-sm">
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <main>
+            <h1>Pakistani Games on itch.io</h1>
+            <p>Many Pakistani developers upload free and commercial games on itch.io. This Pakistan Game Dev list gathers them in one place and explains how to get your game indexed and tagged.</p>
+            <p><a href="https://pakgamedev.com/games">All Pakistani game catalogues</a> · <a href="https://pakgamedev.com/">Home</a></p>
+        </main>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -112,11 +136,11 @@
                                 PAKISTANI GAMES ON <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">ITCH.IO</span>
                             </h2>
                             <p className="helper-text lead mb-0 max-w-3xl">
-                                Pakistani developers have been shipping free and commercial games on itch for years — and a lot of them stay hard to find. This opt-in list gathers them in one place.
+                                Pakistani developers have been shipping free and commercial games on itch for years, and a lot of them stay hard to find. This opt-in list gathers them in one place.
                             </p>
                         </section>
 
-                        {/* Primary CTA — cinematic banner */}
+                        {/* Primary CTA - cinematic banner */}
                         <section>
                             <a
                                 href="https://itch.io/games/tag-pakistani"
@@ -146,7 +170,7 @@
                             </a>
                         </section>
 
-                        {/* How to join — scannable steps */}
+                        {/* How to join - scannable steps */}
                         <section>
                             <div className="flex items-end justify-between mb-6 px-1">
                                 <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3">How to be on the list</h3>
@@ -178,7 +202,7 @@
                                         <h4 className="text-xl font-bold uppercase tracking-wide mb-0">Already indexed?</h4>
                                     </div>
                                     <p className="helper-text">
-                                        Search for your game by name on itch.io. If it appears in results, it’s indexed — just add the <span className="text-green-400 font-semibold">pakistani</span> tag and you’re on the list.
+                                        Search for your game by name on itch.io. If it appears in results, it’s indexed. Just add the <span className="text-green-400 font-semibold">pakistani</span> tag and you’re on the list.
                                     </p>
                                     <p className="helper-text mb-0 text-gray-400">
                                         Indexing also helps your game show up in search, new, upcoming, and popular charts.
@@ -193,7 +217,7 @@
                                         <h4 className="text-xl font-bold uppercase tracking-wide mb-0">Not in search?</h4>
                                     </div>
                                     <p className="helper-text">
-                                        Follow itch’s indexing docs. If you meet the requirements and still aren’t indexed after about a week, email support and ask politely — include your game link.
+                                        Follow itch’s indexing docs. If you meet the requirements and still aren’t indexed after about a week, email support and ask politely. Include your game link.
                                     </p>
                                     <div className="flex flex-col sm:flex-row gap-3 mt-2">
                                         <a
@@ -220,7 +244,7 @@
                                 className="w-full text-left glass-panel rounded-xl px-6 py-4 flex items-center justify-between gap-4 cursor-pointer border border-white/10 hover:border-green-500/40 transition"
                             >
                                 <span className="font-bold uppercase tracking-widest text-sm md:text-base">
-                                    {showIndexHelp ? 'Hide' : 'More detail'} — new accounts &amp; support tips
+                                    {showIndexHelp ? 'Hide' : 'More detail'}: new accounts &amp; support tips
                                 </span>
                                 <i className={`fa-solid fa-chevron-${showIndexHelp ? 'up' : 'down'} text-green-400`}></i>
                             </button>
@@ -228,7 +252,7 @@
                             {showIndexHelp && (
                                 <div className="glass-panel glass-static rounded-xl p-6 md:p-8 space-y-4">
                                     <p className="helper-text mb-0">
-                                        Automatic indexing often doesn’t kick in until you’re an established, trusted itch.io user. Most new accounts need to contact support once to get a first game indexed — that detail is easy to miss in the docs.
+                                        Automatic indexing often doesn’t kick in until you’re an established, trusted itch.io user. Most new accounts need to contact support once to get a first game indexed. That detail is easy to miss in the docs.
                                     </p>
                                     <p className="helper-text mb-0">
                                         When you write to <a href="mailto:support@itch.io" className="text-green-400 hover:underline">support@itch.io</a>, be polite, link the game, and confirm you’ve met the publishing requirements in the docs. After you’re indexed, the <span className="text-green-400 font-semibold">pakistani</span> tag is enough to appear on this list.

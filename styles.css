@@ -88,7 +88,7 @@ body {
     text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
 }
 
-/* Helper / secondary body copy — readable muted text */
+/* Helper / secondary body copy - readable muted text */
 .helper-text {
     color: #cbd5e1; /* slate-300, better contrast than gray-500 */
     font-size: 1.05rem;
@@ -124,7 +124,7 @@ tbody tr:hover {
     image-rendering: -moz-crisp-edges;
 }
 
-/* Home — cinematic What We Do tiles */
+/* Home - cinematic What We Do tiles */
 .pillar-tile {
     position: relative;
     display: block;
@@ -222,12 +222,12 @@ tbody tr:hover {
     transform: translateX(5px);
 }
 
-/* Join us icon row — no lift on the container */
+/* Join us icon row - no lift on the container */
 .join-row .join-icon {
     text-decoration: none;
 }
 
-/* Events page — full-width banner tiles */
+/* Events page - full-width banner tiles */
 .event-banner {
     position: relative;
     display: block;
@@ -352,7 +352,7 @@ tbody tr:hover {
     50% { transform: translateX(4px); }
 }
 
-/* Games page — cinematic storefront tiles (2-col layout) */
+/* Games page - cinematic storefront tiles (2-col layout) */
 .game-banner {
     position: relative;
     display: block;
@@ -451,12 +451,12 @@ tbody tr:hover {
     transform: translateX(6px);
 }
 
-/* itch-games — step cards */
+/* itch-games - step cards */
 .itch-step {
     min-height: 100%;
 }
 
-/* itch-games — compact CTA (not full event banner) */
+/* itch-games - compact CTA (not full event banner) */
 .itch-cta {
     position: relative;
     display: block;

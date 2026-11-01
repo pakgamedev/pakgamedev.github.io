@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events - Pakistan Game Dev</title>
-    <meta property="og:title" content="Events - Pakistan Game Dev">
+    <title>Pakistani Game Events &amp; Showcases | Pakistan Game Dev</title>
+    <meta name="description" content="Steam showcases, Pak Game Awards, and community gatherings for Pakistani game developers, students, and players, organized with PakGameDev.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <link rel="canonical" href="https://pakgamedev.com/events">
+    <link rel="alternate" type="text/plain" href="https://pakgamedev.com/llms.txt" title="LLM summary">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pakistan Game Dev">
+    <meta property="og:url" content="https://pakgamedev.com/events">
+    <meta property="og:title" content="Pakistani Game Events &amp; Showcases | Pakistan Game Dev">
+    <meta property="og:description" content="Steam showcases, awards, and gatherings for Pakistani game developers and players.">
     <meta property="og:image" content="https://pakgamedev.com/files/preview.png">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pakistani Game Events &amp; Showcases | Pakistan Game Dev">
+    <meta name="twitter:description" content="Steam showcases, awards, and gatherings for Pakistani game developers and players.">
     <meta name="twitter:image" content="https://pakgamedev.com/files/preview.png">
-    <meta name="description" content="Steam showcases, awards, and community gatherings for Pakistani game developers and players.">
-    <meta property="og:description" content="Steam showcases, awards, and community gatherings for Pakistani game developers and players.">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Pak Game Dev Events" />
     <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Pakistani Game Events",
+      "url": "https://pakgamedev.com/events",
+      "description": "Steam showcases, awards, and community gatherings for Pakistani game developers and players.",
+      "isPartOf": { "@type": "WebSite", "name": "Pakistan Game Dev", "url": "https://pakgamedev.com/" }
+    }
+    </script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -29,7 +47,13 @@
     <script src="js/content.js"></script>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">
+        <main>
+            <h1>Pakistani Game Events</h1>
+            <p>Steam showcases, Pak Game Awards, and community gatherings highlighting games and developers from Pakistan. Organized with the Pakistan Game Dev community.</p>
+            <p><a href="https://pakgamedev.com/">Back to Pakistan Game Dev</a></p>
+        </main>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -166,7 +190,7 @@
                                 ) : (
                                     <div className="glass-panel glass-static rounded-xl p-8 md:p-12">
                                         <h3 className="text-2xl font-bold tracking-wider uppercase mb-2">Nothing scheduled yet</h3>
-                                        <p className="helper-text mb-0">Watch this space — the next community event will land here.</p>
+                                        <p className="helper-text mb-0">Watch this space. The next community event will land here.</p>
                                     </div>
                                 )}
 

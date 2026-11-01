@@ -1,0 +1,56 @@
+# PakGameDev: https://pakgamedev.com
+# Allow search engines and AI / answer-engine crawlers.
+
+User-agent: *
+Allow: /
+Disallow: /judges-2026
+Disallow: /judges-2026.html
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://pakgamedev.com/sitemap.xml
+# Machine-readable site summary for AI assistants:
+# https://pakgamedev.com/llms.txt

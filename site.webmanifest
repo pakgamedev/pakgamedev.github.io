@@ -1,6 +1,11 @@
 {
-  "name": "Pak Game Dev",
+  "name": "Pakistan Game Dev",
   "short_name": "PakGameDev",
+  "description": "Open community for Pakistani game developers and students: jams, playtests, events, and games made in Pakistan.",
+  "start_url": "/",
+  "id": "/",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -17,5 +22,6 @@
   ],
   "theme_color": "#027500",
   "background_color": "#027500",
-  "display": "standalone"
+  "display": "standalone",
+  "categories": ["games", "education", "social"]
 }
