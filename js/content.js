@@ -70,6 +70,15 @@
             if (item.type === 'jam') return 'GAME JAM';
             if (item.type === 'event') return 'EVENT';
             return String(item.type || '').toUpperCase();
+        },
+
+        /** True if string contains Arabic/Urdu script (for Nastaliq styling). */
+        hasUrdu: function (text) {
+            return /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFC]/.test(String(text || ''));
+        },
+
+        titleClass: function (text, base) {
+            return (base || '') + (this.hasUrdu(text) ? ' urdu' : '');
         }
     };
 

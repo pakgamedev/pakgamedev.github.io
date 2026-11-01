@@ -41,9 +41,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=nastaliq">
     <script src="data/content-data.js"></script>
     <script src="js/content.js"></script>
 </head>
@@ -159,7 +159,10 @@
                                                 </div>
                                                 <div className="md:w-3/4 md:pl-8 text-center md:text-left">
                                                     <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest block mb-1">{(featuredJam.status || 'upcoming').toUpperCase()} | {featuredJam.date}</span>
-                                                    <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 text-white group-hover:text-green-400 transition">{featuredJam.title}</h3>
+                                                    <h3
+                                                        lang={PakContent.hasUrdu(featuredJam.title) ? 'ur' : undefined}
+                                                        className={PakContent.titleClass(featuredJam.title, 'text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 text-white group-hover:text-green-400 transition')}
+                                                    >{featuredJam.title}</h3>
                                                     <p className="text-gray-300 max-w-xl mx-auto md:mx-0 text-xl">{featuredJam.desc}</p>
                                                     <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
                                                         <span className="mr-2">Join on itch.io</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
@@ -197,7 +200,10 @@
                                                 </div>
                                                 <div className="md:w-3/5 p-6 flex flex-col justify-center">
                                                     <span className="text-xs text-gray-400 uppercase tracking-wider mb-2">{jam.date}</span>
-                                                    <h4 className="text-xl font-bold mb-2 leading-tight text-white group-hover:text-green-400 transition">{jam.title}</h4>
+                                                    <h4
+                                                        lang={PakContent.hasUrdu(jam.title) ? 'ur' : undefined}
+                                                        className={PakContent.titleClass(jam.title, 'text-xl font-bold mb-2 leading-tight text-white group-hover:text-green-400 transition')}
+                                                    >{jam.title}</h4>
                                                     <p className="text-gray-400 line-clamp-2 group-hover:text-gray-200">{jam.desc}</p>
                                                     {jam.winner && (
                                                         <p className="mt-2 text-sm text-yellow-400">Winner: {jam.winner}</p>

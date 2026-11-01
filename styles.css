@@ -1,11 +1,22 @@
 /* PakGameDev shared site styles */
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
+
 body {
-    font-family: 'Rajdhani', sans-serif;
+    /* Rajdhani for Latin; Noto Nastaliq fills Urdu/Arabic glyphs */
+    font-family: 'Rajdhani', 'Noto Nastaliq Urdu', sans-serif;
     font-display: swap;
     background-color: #0f172a;
     color: white;
     overflow-x: hidden;
+}
+
+/* Extra line box for Nastaliq ascenders/descenders in titles */
+.urdu,
+:lang(ur) {
+    font-family: 'Noto Nastaliq Urdu', 'Rajdhani', sans-serif;
+    line-height: 1.85;
+    font-weight: 500;
 }
 
 /* Custom Scrollbar */

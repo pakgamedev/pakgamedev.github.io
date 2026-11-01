@@ -143,11 +143,11 @@
     <!-- Google Fonts: Rajdhani for that "Sci-Fi/Gamer" look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="styles.css?v=seo-ai-1">
+    <link rel="stylesheet" href="styles.css?v=nastaliq">
     <script src="data/content-data.js"></script>
     <script src="js/content.js"></script>
 </head>
@@ -375,7 +375,10 @@
                                         </div>
                                         <div className="md:w-3/4 md:pl-8 text-center md:text-left">
                                             <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest block mb-1">{PakContent.labelFor(featuredItem)} | {featuredItem.date}</span>
-                                            <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition">
+                                            <h3
+                                                lang={PakContent.hasUrdu(featuredItem.title) ? 'ur' : undefined}
+                                                className={PakContent.titleClass(featuredItem.title, 'text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition')}
+                                            >
                                                 {featuredItem.title}
                                             </h3>
                                             <p className="text-gray-300 max-w-xl mx-auto md:mx-0 text-xl">{featuredItem.desc}</p>
@@ -469,7 +472,10 @@
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className="text-xs text-gray-400 uppercase tracking-wider group-hover:text-gray-200">{news.date}</span>
                                             </div>
-                                            <h4 className="text-xl font-bold mb-2 leading-tight group-hover:text-green-400 transition">{news.title}</h4>
+                                            <h4
+                                                lang={PakContent.hasUrdu(news.title) ? 'ur' : undefined}
+                                                className={PakContent.titleClass(news.title, 'text-xl font-bold mb-2 leading-tight group-hover:text-green-400 transition')}
+                                            >{news.title}</h4>
                                             <p className="text-l text-gray-400 line-clamp-2 group-hover:text-gray-200">{news.desc}</p>
                                             <div className="mt-4 flex items-center gap-2 text-xs font-bold text-green-500 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                                                 Learn More <i className="fa-solid fa-arrow-right"></i>
