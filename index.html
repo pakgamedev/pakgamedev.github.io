@@ -148,8 +148,24 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="styles.css?v=nastaliq">
-    <script src="data/content-data.js"></script>
-    <script src="js/content.js"></script>
+    <script src="data/content-data.js?v=urdu"></script>
+    <script src="js/content.js?v=urdu"></script>
+    <script>
+    /* Ensure Urdu helpers exist even if an old content.js is still cached. */
+    (function (P) {
+        if (!P) return;
+        if (typeof P.hasUrdu !== 'function') {
+            P.hasUrdu = function (text) {
+                return /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFC]/.test(String(text || ''));
+            };
+        }
+        if (typeof P.titleClass !== 'function') {
+            P.titleClass = function (text, base) {
+                return (base || '') + (this.hasUrdu(text) ? ' urdu' : '');
+            };
+        }
+    })(window.PakContent);
+    </script>
 </head>
 <body>
     <div id="root">
