@@ -32,8 +32,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=pillar-tiles-2">
+    <script src="data/content-data.js"></script>
+    <script src="js/content.js"></script>
 </head>
 <body>
     <div id="root"></div>
@@ -41,169 +43,69 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Data for Links
-        const communityLinks = [
+        const aboutPillars = [
             {
                 id: 1,
-                title: "Join Discord",
-                subtitle: "Chat with fellow devs",
-                icon: "fa-brands fa-discord",
-                color: "text-indigo-400",
-                url: "discord",
-                bgImage: "https://images.unsplash.com/photo-1679057001914-59ab4131dfff?q=80&w=512&auto=format&fit=crop"
+                title: "Jams",
+                blurb: "Join an upcoming jam and make games together under a shared theme and deadline.",
+                icon: "fa-solid fa-trophy",
+                color: "text-yellow-400",
+                url: "jams",
+                image: "https://img.itch.zone/aW1nLzI4MTAzNjI3LnBuZw==/original/aa%2Bx0d.png"
             },
             {
                 id: 2,
-                title: "Subreddit",
-                subtitle: "r/PakGameDev",
-                icon: "fa-brands fa-reddit-alien",
-                color: "text-orange-500",
-                url: "https://www.reddit.com/r/PakGameDev",
-                bgImage: "https://images.unsplash.com/photo-1616509091215-57bbece93654?q=80&w=512&auto=format&fit=crop"
+                title: "Playtests",
+                blurb: "Submit your game for playtests, give feedback and share knowledge.",
+                icon: "fa-solid fa-gamepad",
+                color: "text-cyan-400",
+                url: "playtests",
+                image: "https://images.unsplash.com/photo-1687977686478-13b75f82225e?q=80&w=1200&auto=format&fit=crop"
             },
             {
                 id: 3,
-                title: "Steam Games",
-                subtitle: "Made in Pakistan",
-                icon: "fa-brands fa-steam",
-                color: "text-blue-400",
-                url: "steam-games",
-                bgImage: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3476640/09619bf7002c8b0e1b6a89579613f007d83e4cb2/header.jpg"
+                title: "Game Design Discussions",
+                blurb: "Play one game a week and dig into design together.",
+                icon: "fa-solid fa-comments",
+                color: "text-purple-400",
+                url: "club",
+                image: "https://images.unsplash.com/photo-1540634759006-203f597e1a34?q=80&w=1200&auto=format&fit=crop"
             },
             {
                 id: 4,
-                title: "Itch.io Games",
-                subtitle: "More Pakistani Games",
-                icon: "fa-brands fa-itch-io",
-                color: "text-red-400",
-                url: "itch-games",
-                bgImage: "https://img.itch.zone/aW1nLzIwODk5OTc1LnBuZw==/315x250%23c/crEaA3.png"
+                title: "Events",
+                blurb: "Steam showcases, awards, and gatherings for Pakistani games.",
+                icon: "fa-solid fa-calendar-days",
+                color: "text-orange-400",
+                url: "events",
+                image: "https://i.redd.it/lc1aepfiuofh1.jpeg"
             },
             {
                 id: 5,
-                title: "Game Jam",
-                subtitle: "Join now",
-                icon: "fa-solid fa-trophy",
-                color: "text-yellow-400",
-                url: "game-jam",
-                bgImage: "https://img.itch.zone/aW1nLzI4MTAzNjI3LnBuZw==/original/aa%2Bx0d.png"
-            },
-            // {
-            //     id: 6,
-            //     title: "Game Dev Club",
-            //     subtitle: "A Game A Week",
-            //     icon: "fa-solid fa-gamepad",
-            //     color: "text-cyan-400",
-            //     url: "club",
-            //     bgImage: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=512&auto=format&fit=crop"
-            // },
-            {
-                id: 7,
-                title: "Linkedin",
-                subtitle: "Follow if you must",
-                icon: "fa-brands fa-linkedin",
-                color: "text-sky-400",
-                url: "https://www.linkedin.com/company/pakgamedev",
-                bgImage: "https://images.unsplash.com/photo-1585288766827-c62e98d70191?q=80&w=512&auto=format&fit=crop"
+                title: "Pakistani Games",
+                blurb: "Catalogues of games made in Pakistan on Steam and itch.io.",
+                icon: "fa-solid fa-globe",
+                color: "text-green-400",
+                url: "games",
+                image: "files/itch-preview.jpg"
             }
         ];
 
-        // Data for News
-        const newsItems = [
-            {
-                id: 110,
-                category: "FEATURED",
-                title: "404: Dino Not Found",
-                date: "24th August, 2026",
-                image: "https://img.itch.zone/aW1nLzI5MzEyOTY5LnBuZw==/original/szGYtK.png",
-                url: "https://itch.io/jam/pakistan-game-jam/results",
-                desc: "Winner of the 5th Pakistan Game Jam"
-            },
-            {
-                id: 109,
-                category: "EVENT",
-                title: "Play Pak Game Jam Games",
-                date: "16th August, 2026",
-                image: "https://img.itch.zone/aW1nLzI4MTAzNjI3LnBuZw==/original/aa%2Bx0d.png",
-                url: "https://itch.io/jam/pakistan-game-jam/entries",
-                desc: "Play the Pakistan Game Jam submissions, give feedback and rate to select a winner."
-            },
-            {
-                id: 108,
-                category: "EVENT",
-                title: "Games from Pakistan",
-                date: "1st August, 2026",
-                image: "https://i.redd.it/lc1aepfiuofh1.jpeg",
-                url: "steam-event",
-                desc: "First ever Pakistani Steam event showcasing 50+ Pakistani games!"
-            },
-            {
-                id: 107,
-                category: "GAME JAM",
-                title: "Pakistan Game Jam 2026.2",
-                date: "13th August, 2026",
-                image: "https://img.itch.zone/aW1nLzI4MTAzNjI3LnBuZw==/original/aa%2Bx0d.png",
-                url: "game-jam",
-                desc: "Happening alongside Games from Pakistan. Join the itch.io jam now."
-            },
-            {
-                id: 106,
-                category: "GAME JAM",
-                title: "چھٹیاں ہیں تو گیم جیم",
-                date: "27th May, 2026",
-                image: "https://img.itch.zone/aW1nLzI2Njc4OTA0LnBuZw==/original/5PQGXM.png",
-                url: "https://itch.io/jam/epic-indie-dev",
-                desc: "Starting a new series of game jams specifically for public holidays."
-            },
-             {
-                id: 105,
-                category: "GAME JAM",
-                title: "Pakistan Game Jam 2026.1",
-                date: "20th March, 2026",
-                image: "https://img.itch.zone/aW1nLzIyOTM0MzMxLnBuZw==/140x111%23/oWlf6B.png",
-                url: "game-jam",
-                desc: "Join the itch.io jam now. Theme will be announced when the jam starts."
-            },
-            {
-                id: 104,
-                category: "ANNOUNCEMENT",
-                title: "Join the Game Dev Club",
-                date: "2026",
-                image: "https://images.unsplash.com/photo-1630251800800-cfc688e27a3b?q=80&w=512&auto=format&fit=crop",
-                url: "club",
-                desc: "Play a new game every week. Learn to analyze games and grow as a game developer."
-            },
-            {
-                id: 101,
-                category: "EVENT",
-                title: "Global Game Jam '26 - Pakistan",
-                date: "Starting Jan 26, 2026",
-                image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=512&auto=format&fit=crop",
-                url: "https://globalgamejam.org/jam-sites/2026?label=&country=PK&city=&field_jam_site_type_target_id=All&field_jam_site_audience_target_id=All",
-                desc: "Make games, find collaborations and gather feedback!"
-            },
-            {
-                id: 102,
-                category: "VIDEO",
-                title: "Best Pakistani Games From 2025",
-                date: "Dec 12, 2025",
-                image: "https://i.ytimg.com/vi/6oWF8uabrQM/maxresdefault.jpg",
-                url: "https://www.youtube.com/watch?v=6oWF8uabrQM",
-                desc: "Explore an un-official list of best Pakistani games from the year 2025."
-            },
-            {
-                id: 103,
-                category: "ANNOUNCEMENT",
-                title: "Pakistani Game Awards 2026",
-                date: "Dec 10, 2025",
-                image: "files/et737ket737ket73.png",
-                url: "https://www.reddit.com/r/PakGameDev/comments/1pj3dce",
-                desc: "Official community run 2026 game awards will be held at the end of the year."
-            }
+        const socialLinks = [
+            { id: 1, title: "Discord", icon: "fa-brands fa-discord", color: "text-indigo-400", url: "discord" },
+            { id: 2, title: "Reddit", icon: "fa-brands fa-reddit-alien", color: "text-orange-500", url: "https://www.reddit.com/r/PakGameDev" },
+            { id: 3, title: "LinkedIn", icon: "fa-brands fa-linkedin", color: "text-sky-400", url: "https://www.linkedin.com/company/pakgamedev" },
+            { id: 4, title: "YouTube", icon: "fa-brands fa-youtube", color: "text-red-500", url: "https://www.youtube.com/@PakGameDev" },
+            { id: 5, title: "Instagram", icon: "fa-brands fa-instagram", color: "text-pink-400", url: "https://www.instagram.com/pakgamedev" },
+            { id: 6, title: "Bluesky", icon: "fa-brands fa-bluesky", color: "text-sky-300", url: "https://bsky.app/profile/pakgamedev.com" },
+            { id: 7, title: "TikTok", icon: "fa-brands fa-tiktok", color: "text-white", url: "https://www.tiktok.com/@pakgamedev" }
         ];
 
         const App = () => {
             const [currentTime, setCurrentTime] = useState(new Date());
+            const [featuredItem, setFeaturedItem] = useState(null);
+            const [newsItems, setNewsItems] = useState([]);
+            const [contentLoading, setContentLoading] = useState(true);
 
             // Function to safely check localStorage for a seed, or create a new one.
             const getOrCreateAvatarSeed = () => {
@@ -228,13 +130,24 @@
             // Initialize the state by calling the function
             const [avatarSeed] = useState(getOrCreateAvatarSeed);
 
-            // Get the first news item as the featured event
-            const featuredEvent = newsItems[0]; 
-
             // Clock update
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 60000);
                 return () => clearInterval(timer);
+            }, []);
+
+            useEffect(() => {
+                PakContent.load()
+                    .then((data) => {
+                        const latest = PakContent.latest(data);
+                        setFeaturedItem(latest);
+                        setNewsItems(PakContent.news(data, latest && latest.type === 'news' ? latest.id : null));
+                        setContentLoading(false);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        setContentLoading(false);
+                    });
             }, []);
 
             const formatTime = (date) => {
@@ -288,68 +201,93 @@
                             </p>
                         </section>
 
-                        {/* FEATURED EVENT LINK */}
+                        {/* FEATURED — latest catalogue item of any type */}
                         <section className="mb-12">
-                            <a target="_blank" href={featuredEvent.url} className="block glass-panel rounded-xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(22,163,74,0.6)] group">
-                                <div className="flex flex-col md:flex-row items-center p-6 md:p-8">
-                                    {/* Icon/Category */}
-                                    <div className="md:w-1/4 relative mb-4 md:mb-0 rounded-xl overflow-hidden h-48">
-                                        <img 
-                                            src={featuredEvent.image} 
-                                            alt={featuredEvent.title} 
-                                            className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-90 transition-opacity duration-500" 
-                                        />
-                                    </div>
-
-                                    {/* Details */}
-                                    <div className="md:w-3/4 md:pl-8 text-center md:text-left">
-                                        <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest block mb-1">{featuredEvent.category} | {featuredEvent.date}</span>
-                                        <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition">
-                                            {featuredEvent.title}
-                                        </h3>
-                                        <p className="text-gray-300 max-w-xl mx-auto md:mx-0 text-xl">{featuredEvent.desc}</p>
-                                        <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
-                                            <span className="mr-2">SEE NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
+                            {contentLoading && (
+                                <p className="helper-text">Loading…</p>
+                            )}
+                            {!contentLoading && featuredItem && (
+                                <a target="_blank" rel="noopener noreferrer" href={featuredItem.url} className="block glass-panel rounded-xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(22,163,74,0.6)] group">
+                                    <div className="flex flex-col md:flex-row items-center p-6 md:p-8">
+                                        <div className="md:w-1/4 relative mb-4 md:mb-0 rounded-xl overflow-hidden h-48 w-full bg-black/40">
+                                            <img 
+                                                src={featuredItem.image} 
+                                                alt={featuredItem.title} 
+                                                className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-90 transition-opacity duration-500" 
+                                            />
+                                        </div>
+                                        <div className="md:w-3/4 md:pl-8 text-center md:text-left">
+                                            <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest block mb-1">{PakContent.labelFor(featuredItem)} | {featuredItem.date}</span>
+                                            <h3 className="text-3xl md:text-4xl font-extrabold tracking-wider leading-tight mb-2 group-hover:text-green-400 transition">
+                                                {featuredItem.title}
+                                            </h3>
+                                            <p className="text-gray-300 max-w-xl mx-auto md:mx-0 text-xl">{featuredItem.desc}</p>
+                                            <div className="mt-3 flex justify-center md:justify-start items-center text-sm font-bold text-green-500 uppercase tracking-widest">
+                                                <span className="mr-2">SEE NOW</span> <i className="fa-solid fa-arrow-right animate-pulse"></i>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            )}
                         </section>
-                        {/* END FEATURED EVENT LINK */}
 
 
-                        {/* Quick Links Grid (Horizontal Scroll on Mobile) */}
+                        {/* About the community */}
                         <section>
                             <div className="flex items-end justify-between mb-4 px-1">
-                                <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3">Community Links</h3>
-                                <span className="meta-text hidden md:block">Press Start to Join</span>
+                                <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3">What We Do</h3>
+                                <span className="meta-text hidden md:block">The community at work</span>
                             </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                                {communityLinks.map((link) => (
-                                    <a 
-                                        key={link.id} 
-                                        href={link.url}
-                                        target="_blank"
-                                        className="group relative h-48 glass-panel rounded-xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 no-underline"
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5">
+                                {aboutPillars.map((pillar, index) => (
+                                    <a
+                                        key={pillar.id}
+                                        href={pillar.url}
+                                        {...(pillar.url.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                        className={`pillar-tile group no-underline text-white lg:col-span-2${index === 3 ? ' lg:col-start-2' : ''}`}
                                     >
-                                        {/* Background Image with Overlay */}
-                                        <div className="absolute inset-0 z-0">
-                                            <img src={link.bgImage} alt={link.title} className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition duration-500 group-hover:scale-110" />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                                        <div className="pillar-tile__media" aria-hidden="true">
+                                            <img src={pillar.image} alt="" />
                                         </div>
-
-                                        {/* Content */}
-                                        <div className="relative z-10 translate-y-2 group-hover:translate-y-0 transition duration-300">
-                                            <div className={`text-4xl mb-2 ${link.color} drop-shadow-lg transform origin-left group-hover:scale-110 transition`}>
-                                                <i className={link.icon}></i>
+                                        <div className="pillar-tile__shade" aria-hidden="true"></div>
+                                        <div className="pillar-tile__body">
+                                            <div className={`text-2xl md:text-3xl mb-2 ${pillar.color} drop-shadow-lg group-hover:scale-110 origin-left transition duration-300`}>
+                                                <i className={pillar.icon}></i>
                                             </div>
-                                            <h4 className="text-xl font-bold leading-none mb-1 text-white group-hover:text-green-400 transition">{link.title}</h4>
-                                            <p className="text-xs text-gray-400 font-medium tracking-wider uppercase">{link.subtitle}</p>
+                                            <h4 className="text-xl md:text-2xl font-extrabold tracking-wide uppercase leading-tight group-hover:text-green-400 transition-colors duration-300">{pillar.title}</h4>
+                                            <p className="mt-1.5 text-sm text-gray-200/90 leading-snug line-clamp-2">{pillar.blurb}</p>
+                                            <span className="pillar-tile__cta">
+                                                Explore <i className="fa-solid fa-arrow-right"></i>
+                                            </span>
                                         </div>
+                                    </a>
+                                ))}
+                            </div>
+                        </section>
 
-                                        {/* Focus Border Effect */}
-                                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-green-500/50 rounded-xl transition duration-300"></div>
+                        {/* Join / socials */}
+                        <section>
+                            <div className="flex items-end justify-between mb-4 px-1">
+                                <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-sky-500 pl-3">Join Us</h3>
+                                <span className="meta-text hidden md:block">Find your channel</span>
+                            </div>
+
+                            <div className="join-row glass-panel glass-static rounded-xl px-4 py-6 md:px-8 flex flex-wrap items-center justify-center gap-4 md:gap-6">
+                                {socialLinks.map((social) => (
+                                    <a
+                                        key={social.id}
+                                        href={social.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title={social.title}
+                                        aria-label={social.title}
+                                        className="join-icon group no-underline flex flex-col items-center gap-2 w-16 md:w-20"
+                                    >
+                                        <span className={`w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-2xl md:text-3xl ${social.color} group-hover:border-green-500/50 group-hover:bg-white/10 group-hover:scale-110 transition duration-300`}>
+                                            <i className={social.icon}></i>
+                                        </span>
+                                        <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-400 group-hover:text-green-400 transition">{social.title}</span>
                                     </a>
                                 ))}
                             </div>
@@ -362,26 +300,20 @@
                             </div>
 
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                {/* Featured/Latest News */}
-                                {newsItems.map((news) => (
-                                    <a target="_blank" href={news.url} key={news.id} className="glass-panel p-0 rounded-xl flex flex-col md:flex-row h-auto md:h-48 overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-                                        
-                                        {/* Image */}
+                                {!contentLoading && newsItems.map((news) => (
+                                    <a target="_blank" rel="noopener noreferrer" href={news.url} key={news.id} className="glass-panel p-0 rounded-xl flex flex-col md:flex-row h-auto md:h-48 overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]">
                                         <div className="md:w-2/5 relative overflow-hidden h-48 md:h-full">
                                             <img src={news.image} alt={news.title} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" />
                                             <div className="absolute top-2 left-2 bg-black/80 backdrop-blur text-[10px] font-bold px-2 py-1 rounded text-white uppercase tracking-widest border border-white/10">
-                                                {news.category}
+                                                {PakContent.labelFor(news)}
                                             </div>
                                         </div>
-                                        
-                                        {/* Content */}
                                         <div className="md:w-3/5 p-6 flex flex-col justify-center relative">
                                             <div className="flex items-center gap-2 mb-2">
                                                 <span className="text-xs text-gray-400 uppercase tracking-wider group-hover:text-gray-200">{news.date}</span>
                                             </div>
                                             <h4 className="text-xl font-bold mb-2 leading-tight group-hover:text-green-400 transition">{news.title}</h4>
                                             <p className="text-l text-gray-400 line-clamp-2 group-hover:text-gray-200">{news.desc}</p>
-                                            
                                             <div className="mt-4 flex items-center gap-2 text-xs font-bold text-green-500 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                                                 Learn More <i className="fa-solid fa-arrow-right"></i>
                                             </div>
