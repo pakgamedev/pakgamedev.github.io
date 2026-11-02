@@ -34,23 +34,15 @@
       "isPartOf": { "@type": "WebSite", "name": "Pakistan Game Dev", "url": "https://pakgamedev.com/" }
     }
     </script>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX -->
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -63,93 +55,127 @@
         </main>
     </div>
 
-    <!-- Firebase -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-        import { getFirestore, collection, doc, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import {
+            getFirestore,
+            collection,
+            doc,
+            onSnapshot,
+            getDoc,
+            runTransaction,
+            serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 
-        // PLACE YOUR CONFIG HERE
         const firebaseConfig = {
-          apiKey: "AIzaSyDqvti-PChTusPiGL0CsGndzR6ppz_ls5c",
-	  authDomain: "pakgamedev-com.firebaseapp.com",
-	  projectId: "pakgamedev-com",
-	  storageBucket: "pakgamedev-com.firebasestorage.app",
-	  messagingSenderId: "482266938106",
-	  appId: "1:482266938106:web:bad5c2745289a25b246743"
+            apiKey: "AIzaSyDqvti-PChTusPiGL0CsGndzR6ppz_ls5c",
+            authDomain: "pakgamedev-com.firebaseapp.com",
+            projectId: "pakgamedev-com",
+            storageBucket: "pakgamedev-com.firebasestorage.app",
+            messagingSenderId: "482266938106",
+            appId: "1:482266938106:web:bad5c2745289a25b246743"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = firebaseConfig['appId'];
+        const appId = firebaseConfig.appId;
 
-        window.FB = { auth, db, appId, signInAnonymously, onAuthStateChanged, collection, doc, onSnapshot, query };
+        window.FB = {
+            auth, db, appId,
+            signInAnonymously, onAuthStateChanged,
+            collection, doc, onSnapshot, getDoc, runTransaction, serverTimestamp
+        };
+        window.dispatchEvent(new Event('fb-ready'));
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-	
-	const CurrentGameHero = ({ user }) => {
+        const { useState, useEffect, useCallback } = React;
+
+        const DISCORD_INVITE = "https://pakgamedev.com/discord";
+        const SOCIAL_LINKS = [
+            { title: "Discord", icon: "fa-brands fa-discord", url: DISCORD_INVITE },
+            { title: "Reddit", icon: "fa-brands fa-reddit-alien", url: "https://www.reddit.com/r/PakGameDev" },
+            { title: "Bluesky", icon: "fa-brands fa-bluesky", url: "https://bsky.app/profile/pakgamedev.com" },
+            { title: "LinkedIn", icon: "fa-brands fa-linkedin", url: "https://www.linkedin.com/company/pakgamedev" },
+            { title: "Instagram", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/pakgamedev" },
+            { title: "TikTok", icon: "fa-brands fa-tiktok", url: "https://www.tiktok.com/@pakgamedev" },
+            { title: "YouTube", icon: "fa-brands fa-youtube", url: "https://www.youtube.com/@PakGameDev" },
+        ];
+
+        function waitForFB() {
+            return new Promise((resolve) => {
+                if (window.FB) return resolve(window.FB);
+                const onReady = () => {
+                    window.removeEventListener('fb-ready', onReady);
+                    resolve(window.FB);
+                };
+                window.addEventListener('fb-ready', onReady);
+            });
+        }
+
+        const CurrentGameHero = ({ user, fbReady }) => {
             const [currentGame, setCurrentGame] = useState(null);
+            const [loading, setLoading] = useState(true);
 
             useEffect(() => {
-                if (!user) return;
+                if (!fbReady || !user) return;
                 const { db, appId, doc, onSnapshot } = window.FB;
-                
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'current', 'game');
                 const unsubscribe = onSnapshot(docRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                        setCurrentGame(snapshot.data());
-                    }
-                }, (err) => console.error("Current Game error", err));
-
+                    setCurrentGame(snapshot.exists() ? snapshot.data() : null);
+                    setLoading(false);
+                }, (err) => {
+                    console.error("Current Game error", err);
+                    setLoading(false);
+                });
                 return () => unsubscribe();
-            }, [user]);
-            
+            }, [user, fbReady]);
+
+            if (!fbReady || !user || loading) {
+                return (
+                    <section className="relative w-full h-[360px] md:h-[480px] rounded-3xl overflow-hidden border border-white/5 flex flex-col items-center justify-center p-8 text-center hero-glow">
+                        <p className="text-green-400 font-mono text-sm tracking-[0.25em] uppercase animate-pulse">Loading this week's game…</p>
+                    </section>
+                );
+            }
+
             if (!currentGame) {
                 return (
-                    <section className="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden border-white/5 flex flex-col items-center justify-center p-8 text-center hero-glow border-green-500/20">
+                    <section className="relative w-full h-[360px] md:h-[480px] rounded-3xl overflow-hidden border border-green-500/20 flex flex-col items-center justify-center p-8 text-center hero-glow">
                         <div className="absolute inset-0 z-0 bg-black/40">
-                            <div className="w-full h-full opacity-10 bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] animate-[pulse_4s_infinite]"></div>
+                            <div className="w-full h-full opacity-10 bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px]"></div>
                         </div>
-                        <div className="relative z-10 space-y-6">
-                            <div className="w-24 h-24 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-                                <i className="fa-solid fa-microchip text-4xl text-gray-500 animate-pulse"></i>
+                        <div className="relative z-10 space-y-4 max-w-xl">
+                            <div className="w-20 h-20 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-white/10">
+                                <i className="fa-solid fa-microchip text-3xl text-gray-500"></i>
                             </div>
-                            <h2 
-                                className="text-3xl md:text-5xl font-bold tracking-tighter uppercase glitch-text relative" 
-                                data-text="Next game is being chosen."
-                            >
+                            <h2 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase glitch-text">
                                 Next game is being chosen.
                             </h2>
-                            <p className="text-green-500 font-mono text-sm tracking-[0.3em] uppercase opacity-70">
-                                It'll be ready by the Monday morning.
+                            <p className="text-green-500 font-mono text-sm tracking-[0.2em] uppercase opacity-80">
+                                Ready Monday morning · meanwhile upvote the queue below
                             </p>
-                            <div className="pt-4 flex justify-center gap-1">
-                                <span className="w-2 h-1 bg-green-500/40 animate-bounce"></span>
-                                <span className="w-2 h-1 bg-green-500/40 animate-bounce [animation-delay:0.2s]"></span>
-                                <span className="w-2 h-1 bg-green-500/40 animate-bounce [animation-delay:0.4s]"></span>
-                            </div>
                         </div>
                     </section>
                 );
             }
 
+            const discussUrl = currentGame.discord_thread_url || DISCORD_INVITE;
+
             return (
-                <section className="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden border-green-500/20 group hero-glow">
-                    {/* Background Header Image */}
+                <section className="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden border border-green-500/20 group hero-glow">
                     <div className="absolute inset-0 z-0">
-                        <img 
-                            src={currentGame.header_image} 
-                            className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000" 
+                        <img
+                            src={currentGame.header_image}
+                            className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000"
                             alt=""
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/40 to-transparent"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a] via-transparent to-transparent"></div>
                     </div>
 
-                    {/* Content */}
                     <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-12">
                         <div className="space-y-6 max-w-3xl">
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-bold tracking-[0.2em] uppercase">
@@ -160,137 +186,252 @@
                                 Now Playing
                             </div>
 
-                            {/* Library Logo or Name */}
                             {currentGame.library_logo ? (
-                                <img 
-                                    src={currentGame.library_logo} 
-                                    className="line-clamp-2 text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow max-h-20 md:max-h-[11rem] object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
-                                    alt={currentGame.name} 
+                                <img
+                                    src={currentGame.library_logo}
+                                    className="max-h-20 md:max-h-[11rem] object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                                    alt={currentGame.name}
                                 />
                             ) : (
-                                <h2 className="line-clamp-2 text-5xl md:text-8xl font-bold uppercase tracking-tighter text-glow">
+                                <h2 className="line-clamp-2 text-4xl md:text-7xl font-bold uppercase tracking-tighter text-glow">
                                     {currentGame.name}
                                 </h2>
                             )}
 
-                            <div className="flex flex-wrap items-center gap-4 pt-4">
-                                <a 
-                                    href={currentGame.url} 
-                                    target="_blank" 
+                            <div className="flex flex-wrap items-center gap-4">
+                                <a
+                                    href={currentGame.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="px-8 py-3 bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(22,163,74,0.4)]"
                                 >
-                                    START PLAYING
+                                    Start Playing
                                 </a>
-                                <a 
-                                    href="https://discord.gg/W6mrcGaNFJ"
-                                    target="_blank" 
-                                    className="px-8 py-3 bg-transparent border-2 border-green-600 hover:bg-green-200/10 text-green-600 font-bold uppercase tracking-widest rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(22,163,74,0.4)]"
+                                <a
+                                    href={discussUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-8 py-3 bg-transparent border-2 border-green-600 hover:bg-green-200/10 text-green-500 font-bold uppercase tracking-widest rounded-lg transition-all transform hover:scale-105 active:scale-95"
                                 >
-                                    START DISCUSSING
+                                    Discuss on Discord
                                 </a>
                             </div>
-                            {currentGame.doc_id == "steam-next-fest" ? (
-                                <div className="text-xl">Bonus free-for-all week: play any demo from Next Fest. At least one demo per day is recommended.</div>
+                            {currentGame.doc_id === "steam-next-fest" ? (
+                                <p className="text-lg text-slate-200">Bonus free-for-all week: play any demo from Next Fest. At least one demo per day is recommended.</p>
                             ) : (
-                                <div className="text-xl">Download the game, play and analyze. You have til Sunday 11pm to review and discuss.</div>
+                                <p className="text-lg text-slate-200">Download, play, and analyze. Discuss in this week's Discord thread by Sunday 11pm PKT.</p>
                             )}
-                            
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const HowItWorks = () => (
+            <section className="space-y-6">
+                <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3 text-glow">How it works</h3>
+                <ol className="grid md:grid-cols-2 gap-4 list-none p-0 m-0">
+                    {[
+                        { n: "1", t: "Join Discord", d: "Grab the PakGameDev invite and pick up the Game Dev Club role get pings on Monday." },
+                        { n: "2", t: "Play this week's game", d: "Any time from Monday morning through Sunday 11pm PKT. Take notes while playing." },
+                        { n: "3", t: "Discuss on Discord", d: "What did you like? What didn't you like? And why? Post thoughts in that week's forum thread." },
+                        { n: "4", t: "Upvote what's next", d: "Highest-voted queue games are chosen first on Monday. Suggest new titles on discord." },
+                    ].map((step) => (
+                        <li key={step.n} className="glass-panel glass-static rounded-xl p-5 flex gap-4">
+                            <span className="text-green-500 font-mono text-2xl font-bold">{step.n}</span>
+                            <div>
+                                <p className="font-bold uppercase tracking-wide text-white">{step.t}</p>
+                                <p className="text-slate-300 text-sm mt-1 leading-relaxed">{step.d}</p>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
+            </section>
+        );
+
+        const QueuedGames = ({ user, fbReady }) => {
+            const [games, setGames] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [myVotes, setMyVotes] = useState({});
+            const [busyId, setBusyId] = useState(null);
+
+            useEffect(() => {
+                if (!fbReady || !user) return;
+                const { db, appId, collection, onSnapshot } = window.FB;
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'games');
+                const unsubscribe = onSnapshot(colRef, (snapshot) => {
+                    const gamesList = snapshot.docs.map((d) => ({
+                        id: d.id,
+                        ...d.data()
+                    }));
+                    gamesList.sort((a, b) => (Number(b.votes) || 0) - (Number(a.votes) || 0) || (a.name || '').localeCompare(b.name || ''));
+                    setGames(gamesList);
+                    setLoading(false);
+                }, (err) => {
+                    console.error("Queue error", err);
+                    setLoading(false);
+                });
+                return () => unsubscribe();
+            }, [user, fbReady]);
+
+            useEffect(() => {
+                if (!fbReady || !user || games.length === 0) {
+                    setMyVotes({});
+                    return;
+                }
+                let cancelled = false;
+                const { db, appId, doc, getDoc } = window.FB;
+                (async () => {
+                    const voted = {};
+                    await Promise.all(games.map(async (g) => {
+                        const voteRef = doc(db, 'artifacts', appId, 'public', 'data', 'games', g.id, 'votes', user.uid);
+                        const snap = await getDoc(voteRef);
+                        voted[g.id] = snap.exists();
+                    }));
+                    if (!cancelled) setMyVotes(voted);
+                })();
+                return () => { cancelled = true; };
+            }, [user, fbReady, games]);
+
+            const toggleVote = useCallback(async (gameId) => {
+                if (!user || busyId) return;
+                setBusyId(gameId);
+                const { db, appId, doc, runTransaction, serverTimestamp } = window.FB;
+                const voteRef = doc(db, 'artifacts', appId, 'public', 'data', 'games', gameId, 'votes', user.uid);
+                const gameRef = doc(db, 'artifacts', appId, 'public', 'data', 'games', gameId);
+                try {
+                    await runTransaction(db, async (transaction) => {
+                        const voteSnap = await transaction.get(voteRef);
+                        const gameSnap = await transaction.get(gameRef);
+                        if (!gameSnap.exists()) return;
+                        const currentVotes = Number(gameSnap.data().votes) || 0;
+                        if (voteSnap.exists()) {
+                            transaction.delete(voteRef);
+                            transaction.update(gameRef, { votes: Math.max(0, currentVotes - 1) });
+                        } else {
+                            transaction.set(voteRef, { created_at: serverTimestamp() });
+                            transaction.update(gameRef, { votes: currentVotes + 1 });
+                        }
+                    });
+                } catch (err) {
+                    console.error("Vote failed", err);
+                } finally {
+                    setBusyId(null);
+                }
+            }, [user, busyId]);
+
+            return (
+                <section className="mt-4 space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 px-1">
+                        <div>
+                            <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3 text-glow">Upcoming queue</h3>
+                            <p className="helper-text mt-2 max-w-2xl">Upvote to push a game toward Monday. Top votes win (ties are random).</p>
                         </div>
                     </div>
 
-                    {/* Subtle Scanline Overlay for Section Only */}
-                    <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]"></div>
-                </section>
-            );
-        };
-        
-        const QueuedGames = ({ user }) => {
-            const [games, setGames] = useState([]);
-            
-
-            useEffect(() => {
-                if (!user) return;
-                const { db, appId, collection, onSnapshot } = window.FB;
-                
-                // Using the specific path structure provided
-                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'games');
-                
-                const unsubscribe = onSnapshot(colRef, (snapshot) => {
-                    const gamesList = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    setGames(gamesList);
-                }, (err) => console.error("Firestore error", err));
-
-                return () => unsubscribe();
-            }, [user]);
-
-            if (games.length === 0) return null;
-
-            return (
-                <section className="mt-16">
-                    <div className="flex items-end justify-between mb-6 px-1">
-                        <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3 text-glow">Queued Games</h3>
-                    </div>
-                    <div className="grid grid-cols-10 sm:grid-cols-[repeat(16,_minmax(0,_1fr))] md:grid-cols-[repeat(18,_minmax(0,_1fr))] lg:grid-cols-[repeat(20,_minmax(0,_1fr))] gap-1 md:gap-2">
-                        {games.map((game) => (
-                            <a href={game.url} target="_blank" key={game.doc_id} className="group relative aspect-square glass-panel rounded-lg overflow-hidden cursor-pointer">
-                                <img 
-                                    src={game.icon_image || 'https://via.placeholder.com/150'} 
-                                    alt={game.name}
-                                    className="no-filter w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
-                                    <p className="text-[10px] text-center font-bold uppercase leading-tight">{game.name}</p>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
+                    {loading || !user ? (
+                        <p className="text-slate-400 font-mono text-sm tracking-widest uppercase animate-pulse">Loading queue…</p>
+                    ) : games.length === 0 ? (
+                        <div className="glass-panel glass-static rounded-xl p-8 text-center text-slate-300">
+                            Queue is empty. Suggest a game in Discord chat.
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-10 gap-3">
+                            {games.map((game) => {
+                                const voted = !!myVotes[game.id];
+                                const votes = Number(game.votes) || 0;
+                                return (
+                                    <div key={game.id} className="glass-panel glass-static rounded-xl overflow-hidden flex flex-col">
+                                        <a href={game.url} target="_blank" rel="noopener noreferrer" className="relative aspect-square block overflow-hidden">
+                                            <img
+                                                src={game.icon_image || 'https://via.placeholder.com/150'}
+                                                alt={game.name}
+                                                className="no-filter w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                            />
+                                        </a>
+                                        <div className="p-3 flex flex-col gap-2 flex-1">
+                                            <p className="text-xs font-bold uppercase leading-snug line-clamp-2 min-h-[2.5rem]">{game.name}</p>
+                                            <button
+                                                type="button"
+                                                disabled={busyId === game.id}
+                                                onClick={() => toggleVote(game.id)}
+                                                className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors ${
+                                                    voted
+                                                        ? 'bg-green-600 text-black'
+                                                        : 'bg-white/5 border border-white/10 text-green-400 hover:bg-green-500/20'
+                                                }`}
+                                            >
+                                                <i className={`fa-solid fa-caret-up ${voted ? '' : 'opacity-70'}`}></i>
+                                                {votes}
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </section>
             );
         };
 
-        const PastGames = ({ user }) => {
+        const PastGames = ({ user, fbReady }) => {
             const [games, setGames] = useState([]);
-            
+            const [loading, setLoading] = useState(true);
 
             useEffect(() => {
-                if (!user) return;
+                if (!fbReady || !user) return;
                 const { db, appId, collection, onSnapshot } = window.FB;
-                
-                // Using the specific path structure provided
                 const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'past');
-                
                 const unsubscribe = onSnapshot(colRef, (snapshot) => {
-                    const gamesList = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
+                    const gamesList = snapshot.docs.map((d) => ({
+                        id: d.id,
+                        ...d.data()
                     }));
+                    gamesList.sort((a, b) => {
+                        const ta = a.archived_at?.seconds || 0;
+                        const tb = b.archived_at?.seconds || 0;
+                        return tb - ta;
+                    });
                     setGames(gamesList);
-                }, (err) => console.error("Firestore error", err));
-
+                    setLoading(false);
+                }, (err) => {
+                    console.error("Past games error", err);
+                    setLoading(false);
+                });
                 return () => unsubscribe();
-            }, [user]);
+            }, [user, fbReady]);
+
+            if (loading || !user) {
+                return (
+                    <section className="mt-4">
+                        <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-cyan-500 pl-3 text-glow mb-6">Previously played</h3>
+                        <p className="text-slate-400 font-mono text-sm tracking-widest uppercase animate-pulse">Loading archive…</p>
+                    </section>
+                );
+            }
 
             if (games.length === 0) return null;
 
             return (
-                <section className="mt-16">
-                    <div className="flex items-end justify-between mb-6 px-1">
-                        <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-cyan-500 pl-3 text-glow">Previously Played</h3>
-                    </div>
-                    <div className="grid grid-cols-10 sm:grid-cols-[repeat(16,_minmax(0,_1fr))] md:grid-cols-[repeat(18,_minmax(0,_1fr))] lg:grid-cols-[repeat(20,_minmax(0,_1fr))] gap-1 md:gap-2">
+                <section className="mt-4">
+                    <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-cyan-500 pl-3 text-glow mb-6">Previously played</h3>
+                    <div className="grid grid-cols-[repeat(16,minmax(0,1fr))] gap-3">
                         {games.map((game) => (
-                            <a href={game.url} target="_blank" key={game.doc_id} className="group relative aspect-square glass-panel rounded-lg overflow-hidden cursor-pointer">
-                                <img 
-                                    src={game.icon_image || 'https://via.placeholder.com/150'} 
-                                    alt={game.name}
-                                    className="no-filter w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
-                                    <p className="text-[10px] text-center font-bold uppercase leading-tight">{game.name}</p>
+                            <a
+                                href={game.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                key={game.id}
+                                className="group glass-panel glass-static rounded-lg overflow-hidden"
+                            >
+                                <div className="aspect-square overflow-hidden">
+                                    <img
+                                        src={game.icon_image || 'https://via.placeholder.com/150'}
+                                        alt={game.name}
+                                        className="no-filter w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    />
                                 </div>
+                                <p className="p-2 text-[10px] text-center font-bold uppercase leading-tight line-clamp-2 text-slate-300">{game.name}</p>
                             </a>
                         ))}
                     </div>
@@ -298,72 +439,82 @@
             );
         };
 
+        const FollowSection = () => (
+            <section className="space-y-4 border-t border-white/5 pt-12">
+                <h3 className="text-xl font-bold tracking-widest uppercase border-l-4 border-green-500 pl-3 text-glow">Get notified</h3>
+                <p className="helper-text max-w-2xl">
+                    Monday Discord announcement pings the club role. Or follow the channels below for the weekly pick. Discussion always only on Discord.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                    {SOCIAL_LINKS.map((s) => (
+                        <a
+                            key={s.title}
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-green-500/40 hover:bg-green-500/10 transition text-sm font-bold uppercase tracking-wider"
+                        >
+                            <i className={s.icon}></i>
+                            {s.title}
+                        </a>
+                    ))}
+                </div>
+            </section>
+        );
 
         const App = () => {
             const [currentTime, setCurrentTime] = useState(new Date());
+            const [fbReady, setFbReady] = useState(!!window.FB);
+            const [user, setUser] = useState(null);
 
-            // Function to safely check localStorage for a seed, or create a new one.
             const getOrCreateAvatarSeed = () => {
                 const storageKey = 'pakgamedev_avatarSeed';
-                
-                // Use a try/catch block for safer localStorage access
                 try {
                     let seed = localStorage.getItem(storageKey);
                     if (!seed) {
-                        // If no seed exists, generate a new one
                         seed = Math.random().toString(36).substring(2);
                         localStorage.setItem(storageKey, seed);
                     }
                     return seed;
                 } catch (error) {
-                    // Fallback if localStorage is unavailable or throws an error
-                    console.error("Could not access localStorage. Using temporary random seed.", error);
                     return Math.random().toString(36).substring(2);
                 }
             };
-            
-            // Initialize the state by calling the function
+
             const [avatarSeed] = useState(getOrCreateAvatarSeed);
 
             useEffect(() => {
                 const timer = setInterval(() => setCurrentTime(new Date()), 60000);
                 return () => clearInterval(timer);
             }, []);
-	    
-
-            const formatTime = (date) => {
-                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            };
-
-	    const [user, setUser] = useState(null);
 
             useEffect(() => {
-                const { auth, db, signInAnonymously, onAuthStateChanged, collection, onSnapshot } = window.FB;
-                
-                const initAuth = async () => {
+                let unsubAuth = () => {};
+                (async () => {
+                    const FB = await waitForFB();
+                    setFbReady(true);
                     try {
-                        await signInAnonymously(auth);
-                    } catch (e) { console.error("Auth failed", e); }
-                };
-                initAuth();
-
-                const unsubAuth = onAuthStateChanged(auth, (u) => {
-                    setUser(u);
-                });
-
+                        await FB.signInAnonymously(FB.auth);
+                    } catch (e) {
+                        console.error("Auth failed", e);
+                    }
+                    unsubAuth = FB.onAuthStateChanged(FB.auth, (u) => setUser(u));
+                })();
                 return () => unsubAuth();
             }, []);
-            
+
+            const formatTime = (date) =>
+                date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
             return (
                 <div className="relative min-h-screen text-white selection:bg-green-500 selection:text-black">
                     <div className="bg-animated"></div>
                     <div className="scanlines"></div>
-                    
-                    {/* Top Navigation Bar */}
+
                     <nav className="relative z-10 flex items-center justify-between px-8 py-6 backdrop-blur-sm bg-black/20 border-b border-white/5">
                         <a href="/" className="flex items-center gap-4">
                             <div className="w-10 h-10 bg-green-600 rounded flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(22,163,74,0.6)]">
-                                <img className="rounded" src="https://styles.redditmedia.com/t5_ckbq64/styles/communityIcon_ooei9a15xprd1.png"/>
+                                <img className="rounded" src="https://styles.redditmedia.com/t5_ckbq64/styles/communityIcon_ooei9a15xprd1.png" alt="" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold tracking-wider uppercase">Pak Game Dev</h1>
@@ -381,40 +532,39 @@
                     </nav>
 
                     <main className="relative z-10 p-4 md:p-10 max-w-7xl mx-auto space-y-16">
-                        <section className="mb-8">
+                        <section className="mb-4">
                             <h2 className="text-4xl md:text-6xl font-bold mb-2 uppercase">
                                 Game Dev <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">Club</span>
                             </h2>
                             <p className="helper-text lead max-w-2xl">
-                                Play one new game every week. Head over to our <a href="../discord" target="_blank" className="text-green-500 hover:underline">discord server</a> for discussions.
+                                Play one new game every week. Discuss design on Discord. This page is the board for what's playing, what's next, and what we've finished.
                             </p>
-                            <p className="helper-text lead mt-2">
-                                "If you want to be a writer, you must do two things above all others: <b>read a lot and write a lot.</b>" - Stephen King<br/>
-                                We have adopted this mantra for our craft. We must: <b>play a lot of games and make a lot of games.</b>
+                            <p className="helper-text lead mt-2 max-w-2xl">
+                                "If you want to be a writer, you must do two things above all others: <b>read a lot and write a lot.</b>" — Stephen King
+                                <br />
+                                And as game devs we must: <b>play a lot of games and make a lot of games.</b>
                             </p>
                         </section>
 
-			            <CurrentGameHero user={user} />
-                        <QueuedGames user={user} />
-                        <PastGames user={user} />
-                        
-                        {/* Footer / Status Bar */}
-                        <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-300 text-base">
-                            <div className="flex gap-6 mb-4 md:mb-0">
-                                <a href="#" className="hover:text-white transition">Privacy</a>
-                                <a href="#" className="hover:text-white transition">Terms</a>
-                                <a href="#" className="hover:text-white transition">Contact</a>
+                        <CurrentGameHero user={user} fbReady={fbReady} />
+                        <HowItWorks />
+                        <QueuedGames user={user} fbReady={fbReady} />
+                        <PastGames user={user} fbReady={fbReady} />
+                        <FollowSection />
+
+                        <footer className="mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-300 text-base gap-4">
+                            <div className="flex gap-6">
+                                <a href="/" className="hover:text-white transition">Home</a>
+                                <a href={DISCORD_INVITE} className="hover:text-white transition">Discord</a>
+                                <a href="https://www.reddit.com/r/PakGameDev" className="hover:text-white transition">Reddit</a>
                             </div>
                             <div className="flex items-center gap-2">
                                 <span>SYSTEM STATUS:</span>
                                 <span className="text-green-500 font-bold">ONLINE</span>
                                 <span className="w-2 h-2 bg-green-500 rounded-full animate-ping ml-1"></span>
                             </div>
-                            <div className="mt-4 md:mt-0">
-                                &copy; 2026 Pak Game Dev Community.
-                            </div>
+                            <div>&copy; 2026 Pak Game Dev Community.</div>
                         </footer>
-
                     </main>
                 </div>
             );
